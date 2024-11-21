@@ -1,4 +1,4 @@
-package main
+package executor
 
 import "os"
 
@@ -9,7 +9,7 @@ const (
 	UnrecognizedMetaCommand MetaCommandResult = "UnrecognizedMetaCommand"
 )
 
-func doMetaCommand(input string) MetaCommandResult {
+func DoMetaCommand(input string) MetaCommandResult {
 	if input == ".exit" {
 		os.Exit(0)
 		return MetaCommandSuccess

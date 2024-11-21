@@ -1,4 +1,4 @@
-package main
+package storage
 
 const (
 	PageSize      = 4096                        // Size of each page in bytes
