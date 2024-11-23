@@ -3,10 +3,25 @@ package tests
 import (
 	"github.com/stretchr/testify/assert"
 	"io"
+	"os"
 	"os/exec"
 	"strings"
 	"testing"
 )
+
+func setupTestEnvironment() {
+	os.MkdirAll("temp", os.ModePerm)
+}
+
+func cleanupTestEnvironment() {
+	os.RemoveAll("temp")
+}
+func TestMain(m *testing.M) {
+	setupTestEnvironment()
+	code := m.Run()
+	cleanupTestEnvironment()
+	os.Exit(code)
+}
 
 func runScript(commands []string) []string {
 	cmd := exec.Command("../bin/lightdb")
@@ -117,4 +132,20 @@ func TestStringTooLong(t *testing.T) {
 		"[0mdb > ",
 	}
 	assert.Equal(t, expected, output)
+}
+
+func TestPersistenceToDisk(t *testing.T) {
+	runScript([]string{
+		"insert 1 ahmad user1@example.com",
+		".exitP",
+	})
+	output2 := runScript([]string{
+		"select",
+	})
+	expected2 := []string{
+		"db > (1, ahmad, user1@example.com)",
+		"[32mExecuted.",
+		"[0mdb > ",
+	}
+	assert.Equal(t, expected2, output2)
 }

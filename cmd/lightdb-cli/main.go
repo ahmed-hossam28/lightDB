@@ -15,6 +15,9 @@ var (
 	reader = bufio.NewReader(os.Stdin)
 )
 
+func Open(filename string) *storage.Table {
+	return storage.Open(filename)
+}
 func prompt() {
 	fmt.Print("db > ")
 }
@@ -32,7 +35,7 @@ func clearScreen() {
 }
 
 func main() {
-	table := storage.NewTable()
+	table := Open("test.db")
 	for {
 		prompt()
 		input, _ = reader.ReadString('\n')
@@ -45,7 +48,7 @@ func main() {
 			continue
 		}
 		if input[0] == '.' {
-			switch executor.DoMetaCommand(input) {
+			switch executor.DoMetaCommand(input, table) {
 			case executor.MetaCommandSuccess:
 				continue
 			case executor.UnrecognizedMetaCommand:
