@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 )
 
 var (
@@ -33,20 +34,39 @@ func clearScreen() {
 		cmd.Run()
 	}
 }
-
+func TerminalCommand() bool {
+	switch input {
+	case "clear":
+		clearScreen()
+		return true
+	case "ls":
+		cmd := exec.Command("ls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+		return true
+	case "ls -l":
+		cmd := exec.Command("ls", "-l")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+		return true
+	}
+	return false
+}
 func main() {
 	table := Open("test.db")
 	for {
 		prompt()
 		input, _ = reader.ReadString('\n')
 		input = input[:len(input)-1] //removing the \n char
+		input = strings.ToLower(input)
+
 		if len(input) == 0 {
 			continue
 		}
-		if input == "clear" {
-			clearScreen()
+		if TerminalCommand() {
 			continue
 		}
+
 		if input[0] == '.' {
 			switch executor.DoMetaCommand(input, table) {
 			case executor.MetaCommandSuccess:

@@ -65,7 +65,8 @@ func TestInsertAndSelect(t *testing.T) {
 
 	expected := []string{
 		"db > [32mExecuted.",
-		"[0mdb > (1, user1, user1@example.com)",
+		"[0mdb > (ID, Username, Email)",
+		"(1, user1, user1@example.com)",
 		"[32mExecuted.",
 		"[0mdb > ",
 	}
@@ -81,7 +82,8 @@ func TestInsertBoundUserNameLengthAndSelect(t *testing.T) {
 
 	expected := []string{
 		"db > [32mExecuted.",
-		"[0mdb > (1, " + strings.Repeat("a", 32) + ", user1@example.com)",
+		"[0mdb > (ID, Username, Email)",
+		"(1, " + strings.Repeat("a", 32) + ", user1@example.com)",
 		"[32mExecuted.",
 		"[0mdb > ",
 	}
@@ -134,16 +136,18 @@ func TestStringTooLong(t *testing.T) {
 	assert.Equal(t, expected, output)
 }
 
-func TestPersistenceToDisk(t *testing.T) {
+func TestPersistenceToDisk(t *testing.T) { //
 	runScript([]string{
 		"insert 1 ahmad user1@example.com",
-		".exitP",
+		".exit -s",
 	})
+
 	output2 := runScript([]string{
 		"select",
 	})
 	expected2 := []string{
-		"db > (1, ahmad, user1@example.com)",
+		"db > (ID, Username, Email)",
+		"(1, ahmad, user1@example.com)",
 		"[32mExecuted.",
 		"[0mdb > ",
 	}

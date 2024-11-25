@@ -76,17 +76,24 @@ func executeInsert(statement *Statement, table *storage.Table) ExecuteResult {
 	}
 
 	row := &statement.RowToInsert
-	storage.SerializeRow(row, table.RowSlot(table.RowsCount))
+	cursor := storage.NewCursor(table)
+	storage.SerializeRow(row, cursor.End().Value())
 	table.RowsCount += 1
 	return ExecuteSuccess
 }
 func executeSelect(statement *Statement, table *storage.Table) ExecuteResult {
 	var row storage.Row
-	for i := uint32(0); i < table.RowsCount; i++ {
-		row = storage.DeserializeRaw(table.RowSlot(i))
+	cursor := storage.NewCursor(table).Start()
+	printHeader()
+	for !cursor.IsEnd() {
+		row = storage.DeserializeRaw(cursor.Value())
 		printRow(row)
+		cursor.Next()
 	}
 	return ExecuteSuccess
+}
+func printHeader() {
+	fmt.Printf("(ID, Username, Email)\n")
 }
 func printRow(row storage.Row) {
 	fmt.Printf("(%d, %s, %s)\n", row.Id, string(row.Username[:]), string(row.Email[:]))

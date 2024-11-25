@@ -45,7 +45,7 @@ func DoMetaCommand(input string, table *storage.Table) MetaCommandResult {
 	case ".save":
 		PersistToDisk(table)
 		return MetaCommandSuccess
-	case ".exitP":
+	case ".exit -s":
 		PersistToDisk(table)
 		os.Exit(0)
 		return MetaCommandSuccess
