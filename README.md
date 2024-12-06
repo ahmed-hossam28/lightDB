@@ -16,10 +16,11 @@
   - `INSERT`: Add rows to the database.
   - `SELECT`: Retrieve rows from the database.
 - **Dynamic Page Allocation**: Allocates additional pages as required when data grows.
+### In-progress Features
+- ⏳ **Indexing with B-Trees** 🚧: Enhance query performance with B-tree-based indexing mechanisms.
 
 ### Planned Features
 - [ ] **Advanced SQL Support**: Implement `UPDATE`, `DELETE`, and conditional queries.
-- [ ] **Indexing with B-Trees**: Enhance query performance with B-tree-based indexing mechanisms.
 - [ ] **Query Optimization**: Introduce techniques for faster query execution.
 - [ ] **Concurrency and Transactions**: Add support for ACID compliance.
 
